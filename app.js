@@ -19,7 +19,5 @@ app.use(express.static('public'))
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/', indexRouter)
 app.use('/products', productsRouter)
-app.use('/categories/menswear/products', productsRouter)
-app.use('/categories/womenswear/products', productsRouter)
 app.use('/categories', categoriesRouter)
 app.listen(process.env.PORT || 3000)

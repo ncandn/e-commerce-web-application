@@ -1,11 +1,18 @@
 const express = require('express')
 const router = express.Router()
 const categoryController = require("../controllers/categoryController")
+const productController = require("../controllers/productController")
 
 // get homepage
 router.get('/', categoryController.category_home)
 
-// get menswear
+// get categories
 router.get('/:category', categoryController.category_spec)
+
+// get category by parent
+router.get('/:parent/:category', categoryController.category_spec)
+
+// get category products
+router.get('/:parent/:category/:child', productController.product_home)
 
 module.exports = router

@@ -13,10 +13,11 @@ const category_home = async (req,res)=>{
 const category_spec = async(req,res)=>{
     try {
         const osfAPI = await axios.get(`https://osf-digital-backend-academy.herokuapp.com/api/categories?secretKey=$2a$08$3t1EKtnyypsPeVZIrS7B9uWGSb/lRdd2z5H6nN/BPh4GuDPXeC5Du`)
-        res.render(`categories/categories`, {categories : osfAPI.data, params : req.params.category})
+        res.render(`categories/categories`, {categories : osfAPI.data, params : req.params})
     } catch {
         res.redirect('/')
     }
 }
+
 
 module.exports = {category_home, category_spec}

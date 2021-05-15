@@ -18,28 +18,58 @@
 
 <div class="container">
     <% categories.forEach(function(category, index){ %> 
-        <% if(params == 'menswear'){ %> 
-            <% if(category.id.charAt(0) == 'm'){ %> 
-                <hr>
-                <img src="/images/<%- category.image %>" alt="women">
-                <h2><%- category.name %></h2>
-                <h3><%- category.page_title %> </h3>
-                <p><%- category.page_description %></p>
-                <form action="/categories/menswear/products" method="GET">
-                    <button type="submit">View Products</button>
-                </form>
+        <!-- Root categories (clothing, accessory etc.) -->
+        <% if(!params.parent){ %> 
+            <% if(params.category == 'menswear'){ %> 
+                <% if(category.id.charAt(0) == 'm' && category.parent_category_id == 'mens'){ %> 
+                    <hr>
+                    <img src="/images/<%- category.image %>" alt="women">
+                    <h2><%- category.name %></h2>
+                    <h3><%- category.page_title %> </h3>
+                    <p><%- category.page_description %></p>
+                    <form action="/categories/menswear/<%- category.id %> " method="GET">
+                        <button class="btn btn-outline-success" type="submit">View Products</button>
+                    </form>
+                <% } %> 
+            <% } else{ %> 
+                <% if(category.id.charAt(0) == 'w' && category.parent_category_id == 'womens'){ %> 
+                    <hr>
+                    <img src="/images/<%- category.image %>" alt="men">
+                    <h2><%- category.name %></h2>
+                    <h5><%- category.page_title %> </h5>
+                    <p><%- category.page_description %></p>
+                    <form action="/categories/womenswear/<%- category.id %> " method="GET">
+                        <button class="btn btn-outline-success" type="submit">View Products</button>
+                    </form>
+                <% } %> 
             <% } %> 
+        <!-- Root categories (clothing, accessory etc.) -->
         <% } else{ %> 
-            <% if(category.id.charAt(0) == 'w'){ %> 
-                <hr>
-                <img src="/images/<%- category.image %>" alt="men">
-                <h2><%- category.name %></h2>
-                <h5><%- category.page_title %> </h5>
-                <p><%- category.page_description %></p>
-                <form action="/categories/menswear/products" method="GET">
-                    <button type="submit">View Products</button>
-                </form>
+        <!-- Branch categories (clothing-jackets, accessory-ties etc.) -->
+            <% if(params.parent == 'menswear'){ %> 
+                <% if(category.id.charAt(0) == 'm' && category.parent_category_id == params.category){ %> 
+                    <hr>
+                    <img src="/images/<%- category.image %>" alt="women">
+                    <h2><%- category.name %></h2>
+                    <h3><%- category.page_title %> </h3>
+                    <p><%- category.page_description %></p>
+                    <form action="/categories/menswear/<%- params.category %>/<%- category.id %>" method="GET">
+                        <button class="btn btn-outline-success" type="submit">View Products</button>
+                    </form>
+                <% } %> 
+            <% } else{ %> 
+                <% if(category.id.charAt(0) == 'w' && category.parent_category_id == params.category){ %> 
+                    <hr>
+                    <img src="/images/<%- category.image %>" alt="men">
+                    <h2><%- category.name %></h2>
+                    <h5><%- category.page_title %> </h5>
+                    <p><%- category.page_description %></p>
+                    <form action="/categories/womenswear/<%- params.category %>/<%- category.id %>" method="GET">
+                        <button class="btn btn-outline-success" type="submit">View Products</button>
+                    </form>
+                <% } %> 
             <% } %> 
-        <% } %> 
+        <% } %>  
+        <!-- Branch categories (clothing-jackets, accessory-ties etc.) -->
     <% }) %> 
 </div>

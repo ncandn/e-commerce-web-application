@@ -1,6 +1,5 @@
 <header>
     <div class="container">
-        
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -26,23 +25,73 @@
 </header>
 
 <% products.forEach(function(product, index){ %> 
-    <div class="container">
-        <hr>
-        <div class="row">
-            <div class="col-md">
-                <label><%- product.page_title %> </label>
-                <div class="row">
-                    <div class="col">
-                        <img src="/images/<%- product.image_groups[0].images[0].link %>" alt="<%- product.image_groups[0].images[0].alt %>">
-                    </div>
-                    <div class="col-6 align-self-start">
-                        <p><%- product.page_description %> </p>
-                        <form class="align-self-end" action="/categories/womenswear/products" method="GET">
-                            <button type="submit">View Products</button>
-                        </form>
+    <% if(!params.category){ %> 
+        <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col-md">
+                    <label><%- product.page_title %> </label>
+                    <div class="row">
+                        <div class="col">
+                            <img src="/images/<%- product.image_groups[0].images[0].link %>" alt="<%- product.image_groups[0].images[0].alt %>">
+                        </div>
+                        <div class="col-6 align-self-start">
+                            <p><%- product.page_description %> </p>
+                            <% if(product.primary_category_id.charAt(0) == 'm'){ %> 
+                                <% if(product.primary_category_id.charAt(5) == 'c'){ %> 
+                                    <form class="align-self-end" action="/categories/menswear/mens-clothing/<%- product.primary_category_id %>/<%- product.id %>" method="GET">
+                                        <button class="btn btn-outline-success" type="submit">View Product</button>
+                                    </form>
+                                <% } else if(product.primary_category_id.charAt(5) == 'a'){%> 
+                                    <form class="align-self-end" action="/categories/menswear/mens-accessories/<%- product.primary_category_id %>/<%- product.id %>" method="GET">
+                                        <button class="btn btn-outline-success" type="submit">View Product</button>
+                                    </form>
+                                <% } %> 
+                            <% } else if (product.primary_category_id.charAt(0) == 'w') { %>
+                                <% if(product.primary_category_id.charAt(7) == 'c'){ %> 
+                                    <form class="align-self-end" action="/categories/womenswear/womens-clothing/<%- product.primary_category_id %>/<%- product.id %>" method="GET">
+                                        <button class="btn btn-outline-success" type="submit">View Product</button>
+                                    </form>
+                                <% } else if(product.primary_category_id.charAt(7) == 'a'){%> 
+                                    <form class="align-self-end" action="/categories/menswear/womens-accessories/<%- product.primary_category_id %>/<%- product.id %>" method="GET">
+                                        <button class="btn btn-outline-success" type="submit">View Product</button>
+                                    </form>
+                                <% } else if(product.primary_category_id.charAt(7) == 'j'){%>
+                                    <form class="align-self-end" action="/categories/menswear/womens-jewelry/<%- product.primary_category_id %>/<%- product.id %>" method="GET">
+                                        <button class="btn btn-outline-success" type="submit">View Product</button>
+                                    </form>
+                                <% } %>  
+                            <% } %>  
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <% } else{ %>
+        <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col-md">
+                    <label><%- product.page_title %> </label>
+                    <div class="row">
+                        <div class="col">
+                            <img src="/images/<%- product.image_groups[0].images[0].link %>" alt="<%- product.image_groups[0].images[0].alt %>">
+                        </div>
+                        <div class="col-6 align-self-start">
+                            <p><%- product.page_description %> </p>
+                            <% if(product.primary_category_id.charAt(0) == 'm'){ %> 
+                                <form class="align-self-end" action="/categories/menswear/<%- params.category %>/<%- product.primary_category_id %>/<%- product.id %>" method="GET">
+                                    <button class="btn btn-outline-success" type="submit">View Product</button>
+                                </form>
+                            <% } else if (product.primary_category_id.charAt(0) == 'w') { %>
+                                <form class="align-self-end" action="/categories/womenswear/<%- params.category %>/<%- product.primary_category_id %>/<%- product.id %>" method="GET">
+                                    <button class="btn btn-outline-success" type="submit">View Product</button>
+                                </form>
+                            <% } %>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>  
 <% }) %> 

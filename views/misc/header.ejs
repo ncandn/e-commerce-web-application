@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #1d3c45">
       <div class="container-fluid">
         <!-- Brand -->
-        <a class="navbar-brand" style="color:#fff1e1;font-weight:300;font-family:Verdana, Geneva, Tahoma, sans-serif;" href="/">ALIBAZON</a>
+        <a class="navbar-brand" style="color:#fff1e1;text-shadow:0 0 6px #d2601a;font-weight:300;font-family:Verdana, Geneva, Tahoma, sans-serif;" href="/">ALIBAZON</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -11,15 +11,26 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-auto">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/categories">Categories</a>
+              <a class="nav-link active" style="color:#fff1e1" href="/categories">Categories</a>
             </li>
-              <a class="nav-link" href="/products/product_search">Account</a>
-            </li>
+            <% if(!user){ %> 
+              <li>
+                  <a class="nav-link active" style="color:#fff1e1" href="/auth/signin">Signin</a>
+              </li>
+            <% }else{ %> 
+              <li>
+                <a class="nav-link active" style="color:#fff1e1" href="/auth/signout">Account</a>
+              </li>
+              <li>
+                <a class="nav-link active" style="color:#fff1e1" href="/auth/signout">Signout</a>
+              </li>
+            <% } %> 
+            
           </ul>
           <!-- Search -->
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+          <form class="d-flex" action="/products/product_search" method="GET">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="key">
+            <button class="btn btn-outline-warning" type="submit">Search</button>
           </form>
           <!-- Search -->
         </div>

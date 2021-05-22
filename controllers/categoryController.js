@@ -1,9 +1,12 @@
 const axios = require('axios')
+const secret_key = process.env.SECRET_KEY
+const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
 
 // home
 const category_home = async (req,res)=>{
     try {
         res.render('categories/index')
+        console.log("Cookies: " + req.cookies.token)
     } catch {
         res.redirect('/')
     }
@@ -11,13 +14,29 @@ const category_home = async (req,res)=>{
 
 // specific category
 const category_spec = async(req,res)=>{
-    try {
-        const osfAPI = await axios.get(`https://osf-digital-backend-academy.herokuapp.com/api/categories?secretKey=$2a$08$3t1EKtnyypsPeVZIrS7B9uWGSb/lRdd2z5H6nN/BPh4GuDPXeC5Du`)
-        res.render(`categories/categories`, {categories : osfAPI.data, params : req.params})
-    } catch {
-        res.redirect('/')
-    }
+    
+    const osfAPI = await axios.get(`${url}categories?secretKey=${secret_key}`)
+    const filter = []
+    osfAPI.data.forEach(function(category,index){
+        if(!req.params.parent){
+            if(req.params.category == 'menswear'){
+                if(category.id.charAt(0) == 'm' && category.parent_category_id == 'mens')
+                    filter.push(category)
+            } else{
+                if(category.id.charAt(0) == 'w' && category.parent_category_id == 'womens')
+                    filter.push(category)
+            }
+        } else{
+            if(req.params.parent == 'menswear'){
+                if(category.id.charAt(0) == 'm' && category.parent_category_id == req.params.category)
+                    filter.push(category)
+            }else{
+                if(category.id.charAt(0) == 'w' && category.parent_category_id == req.params.category)
+                    filter.push(category)
+            }
+        }
+    })
+    res.render(`categories/categories`, {categories : filter, params : req.params})
 }
-
 
 module.exports = {category_home, category_spec}

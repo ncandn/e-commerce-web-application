@@ -1,8 +1,13 @@
 <div class="container">
-    <img src="/images/products/medium/70284588_100_0.jpg" alt="test">
-    <p>Product description here.</p>
-    <label>Product variants.</label>
-    <form class="d-flex">
-        <button class="btn btn-outline-success" type="submit">Order</button>
-    </form>
+    <% products.forEach(function (product, index){ %>
+        <% if(product.id == params.product_id){ %> 
+            <img src="/images/<%- product.image_groups[0].images[0].link %>" alt="<%- product.image_groups[0].images[0].alt %>">
+            <h2><%- product.name %> </h2>
+            <p><%- product.page_description %>.</p>
+            <label><%- product.price %> <%- product.currency %> </label>
+            <form class="d-flex">
+                <button class="btn btn-outline-success" type="submit">Order</button>
+            </form>
+        <% } %> 
+    <% }) %> 
 </div>

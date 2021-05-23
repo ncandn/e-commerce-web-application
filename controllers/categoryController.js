@@ -31,7 +31,7 @@ const category_spec = async(req,res)=>{
                 if(category.id.charAt(0) == 'm' && category.parent_category_id == req.params.category)
                     filter.push(category)
             }else{
-                if(category.id.charAt(0) == 'w' && category.parent_category_id == req.params.category)
+                if(category.id.charAt(0) == 'w' && category.parent_category_id == req.params.category && category.name != 'Feeling Red')
                     filter.push(category)
             }
         }

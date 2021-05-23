@@ -1,13 +1,65 @@
+<header>
+    <div class="container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/categories">Categories</a></li>
+            <li class="breadcrumb-item"><a href="#" id="prev_cat">
+                <script>
+                    var url = location.href
+                    var url_parts = url.replace(/\/\s*$/,'').split('/')
+                    document.write(url_parts[4].charAt(0).toUpperCase() + url_parts[4].slice(1))
+                </script>
+            </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Products</li>
+            </ol>
+        </nav>
+        <script>
+            var url = location.href
+            var url_parts = url.replace(/\/\s*$/,'').split('/')
+            var elem = document.getElementById('prev_cat')
+            elem.setAttribute("href", "/categories/" + url_parts[4])
+        </script>
+    </div>
+</header>
+
 <div class="container">
+    <hr>
     <% products.forEach(function (product, index){ %>
         <% if(product.id == params.product_id){ %> 
-            <img src="/images/<%- product.image_groups[0].images[0].link %>" alt="<%- product.image_groups[0].images[0].alt %>">
             <h2><%- product.name %> </h2>
-            <p><%- product.page_description %>.</p>
-            <label><%- product.price %> <%- product.currency %> </label>
-            <form class="d-flex">
-                <button class="btn btn-outline-success" type="submit">Order</button>
-            </form>
+            <div class="row">
+                <div class="col">
+                    <img src="/images/<%- product.image_groups[0].images[0].link %>" alt="<%- product.image_groups[0].images[0].alt %>">
+                </div>
+                <div class="col">
+                    <p><%- product.page_description %>.</p>
+                    <h4>Product variants:</h4>
+                    <% product.variation_attributes.forEach(function(variation, index){ %>
+                        <h6><%- variation.name %> </h6>
+                        <div class="container">
+                            <% variation.values.forEach(function(value, index){ %>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-outline-primary">
+                                      <input type="radio" name="<%- variation.name %> " value="<%- value.value %>" id="<%- value.value %>" autocomplete="off"> <%- value.name %> 
+                                    </label>
+                                </div>
+                             <% }) %> 
+                        </div>
+                    <% }) %>  
+                    <br>
+                    <label><%- product.price %> <%- product.currency %> </label>
+                    <br>
+                    <form class="d-flex" action="/cart/addItem" method="POST">
+                        <input type="hidden" name="productId" value="<%- product.id %>">
+                        <input type="hidden" name="variantId" value="<%- product.variants[0].product_id %>"> 
+                        <input type="hidden" name="quantity" value="1">
+                        <button class="btn btn-outline-primary" type="submit">Add to cart</button>
+                    </form>  
+                </div>
+            </div>
         <% } %> 
     <% }) %> 
+    <hr>
 </div>

@@ -5,7 +5,7 @@ const productController = require("../controllers/productController")
 const authMiddleware = require("../middleware/authMiddleware")
 
 // get homepage
-router.get('/', authMiddleware.tokenAuth, categoryController.category_home)
+router.get('/', categoryController.category_home)
 
 // get categories
 router.get('/:category', categoryController.category_spec)

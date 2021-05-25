@@ -1,0 +1,63 @@
+<header>
+    <div class="container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/categories">Categories</a></li>
+            <li class="breadcrumb-item"><a href="#" id="prev_cat">
+                <script>
+                    var url = location.href
+                    var url_parts = url.replace(/\/\s*$/,'').split('/')
+                    document.write(url_parts[4].charAt(0).toUpperCase() + url_parts[4].slice(1))
+                </script>
+            </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Products</li>
+            </ol>
+        </nav>
+        <script>
+            var url = location.href
+            var url_parts = url.replace(/\/\s*$/,'').split('/')
+            var elem = document.getElementById('prev_cat')
+            elem.setAttribute("href", "/categories/" + url_parts[4])
+        </script>
+    </div>
+</header>
+
+<div class="container">
+    <h1>ORDER</h1>
+    <hr>
+    
+    <div class="row">
+        <div class="col">
+            <p>Ordering by: <%= user.name %> </p>
+            <p>Email: <%= user.email %> </p>
+            <p>Adress: </p>
+            <textarea class="form-control" name="address" id="address" rows="3" style="width: 500px; resize:none" placeholder="Address..."></textarea>
+        </div>
+        <div class="col">
+            <% var total = 0 %>
+            <% cart.forEach(function (product, index){ %>
+                <div>
+                    <p><%= product.productId %></p>
+                    <p>Variations: <%= product.variant.variation_values.color %> <%= product.variant.variation_values.size %></p>
+                    <p>Price: <%= product.variant.price %> x <%= product.quantity %> = <%= product.quantity*product.variant.price %> USD</p>
+                    <% total += product.quantity*product.variant.price %>
+                    <hr>
+                </div>
+            <% }) %> 
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <p>Total: <%= total %> USD</p>
+        </div>
+        <div class="col">
+            <form class="d-flex" action="/order" method="GET">
+                <button class="btn btn-primary" type="submit">Order</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+</div>

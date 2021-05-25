@@ -44,8 +44,8 @@ const authSignin = async (req,res)=>{
         "secretKey" : secret_key,
         "email" : req.body.email,
         "password" : req.body.password,
-        "name" : authAPI.data.name,
-        "createdAt" : authAPI.data.createdAt
+        "name" : authAPI.data.user.name,
+        "createdAt" : authAPI.data.user.createdAt
     }
 
     const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '10m'})

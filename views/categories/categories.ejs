@@ -22,11 +22,11 @@
         <% if(!params.parent){ %> 
            
             <hr>
-            <img src="/images/<%- category.image %>" alt="women">
-            <h2><%- category.name %></h2>
-            <h3><%- category.page_title %> </h3>
-            <p><%- category.page_description %></p>
-            <form action="/categories/<%- params.category %>/<%- category.id %>" method="GET">
+            <img src="/images/<%= category.image %>" alt="women">
+            <h2><%= category.name %></h2>
+            <h3><%= category.page_title %></h3>
+            <p><%= category.page_description %></p>
+            <form action="/categories/<%= params.category %>/<%= category.id %>" method="GET">
                 <button class="btn btn-outline-success" type="submit">View Products</button>
             </form>
            
@@ -35,11 +35,11 @@
         <!-- Branch categories (clothing-jackets, accessory-ties etc.) -->
             
             <hr>
-            <img src="/images/<%- category.image %>" alt="women">
-            <h2><%- category.name %></h2>
-            <h3><%- category.page_title %> </h3>
-            <p><%- category.page_description %></p>
-            <form action="/categories/<%- params.parent %>/<%- params.category %>/<%- category.id %>" method="GET">
+            <img src="/images/<%= category.image %>" alt="women">
+            <h2><%= category.name %></h2>
+            <h3><%= category.page_title %></h3>
+            <p><%= category.page_description %></p>
+            <form action="/categories/<%= params.parent %>/<%= params.category %>/<%= category.id %>" method="GET">
                 <button class="btn btn-outline-success" type="submit">View Products</button>
             </form>
                

@@ -7,6 +7,8 @@ router.get('/', tokenAuth, cartController.getCart)
 
 router.post('/addItem', tokenAuth, cartController.addCart)
 
-//router.delete()
+router.post('/changeItemQuantity', tokenAuth, cartController.changeQuantity)
+
+router.delete('/removeItem', tokenAuth, cartController.removeCart)
 
 module.exports = router

@@ -25,17 +25,10 @@
 </header>
 
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>CART</h1>
-        </div>
-        <div class="col">
-            <form class="d-flex" action="/order" method="GET">
-                <button class="btn btn-primary" type="submit">Order</button>
-            </form>
-        </div>
-    </div>
-    <% cart.items.forEach(function (product, index){ %>
+   
+    <h1>WISHLIST</h1>
+
+    <% wishlist.items.forEach(function (product, index){ %>
         <hr>
         <h2><%= product.productId %> </h2>
         <p>Variations: <%= product.variant.variation_values.color %> <%= product.variant.variation_values.size %></p>

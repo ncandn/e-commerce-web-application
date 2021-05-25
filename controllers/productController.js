@@ -11,7 +11,13 @@ const product_home = async(req,res)=>{
 // show a specific product
 const product_spec = async(req,res)=>{
     const osfAPI = await axios.get(`${url}products/product_search?primary_category_id=${req.params.child}&secretKey=${secret_key}`)
-    res.render('products/product_search', {products: osfAPI.data, params : req.params})   
+    let product = {}
+    osfAPI.data.forEach(function(item,index){
+        if(item.id == req.params.product_id){
+            product = item
+        }
+    })
+    res.render('products/product_search', {product, params : req.params})   
 }
 
 const product_browse = async (req,res)=>{

@@ -3,22 +3,24 @@ const jwt = require('jsonwebtoken')
 const secret_key = process.env.SECRET_KEY
 const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
 
-
-const getCart = async(req,res)=>{
+const getWishlist = async(req,res)=>{
     const tokenAPI = req.cookies.axios_token
     try{
-        const cartAPI = await axios.get(`${url}cart?secretKey=${secret_key}`, {
+        const wlAPI = await axios.get(`${url}wishlist`, {
             headers: {
                 'Authorization': `Bearer ${tokenAPI}`
+            },
+            params: {
+                "secretKey" : `${secret_key}`
             }
         })
-        res.render('products/cart', {cart : cartAPI.data})
+        res.render('products/wishlist', {wishlist : wlAPI.data})
     }catch(err){
         res.render('error', {error : err.response.data.error})
     }
 }
 
-const addCart = async(req, res)=>{
+const addWishlist = async(req, res)=>{
     const tokenAPI = req.cookies.axios_token
     try{
         const cartAPI = await axios.post(`${url}cart/addItem`, {
@@ -56,7 +58,7 @@ const changeQuantity = async(req, res)=>{
     }
 }
 
-const removeCart = async(req, res) =>{
+const removeWishlist = async(req, res) =>{
     const tokenAPI = req.cookies.axios_token
 
     try{
@@ -77,4 +79,4 @@ const removeCart = async(req, res) =>{
     }
 }
 
-module.exports = {getCart, addCart, changeQuantity, removeCart}
+module.exports = {getWishlist, addWishlist, changeQuantity, removeWishlist}

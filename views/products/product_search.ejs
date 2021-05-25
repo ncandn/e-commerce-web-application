@@ -48,15 +48,24 @@
                     </div>
                 <% }) %>  
                 <br>
-                <p><%= spec %> </p>
                 <label><%= product.price %> <%= product.currency %> </label>
                 <br>
-                <form class="d-flex" action="/cart/addItem" method="POST">
-                    <input type="hidden" name="productId" value="<%= product.id %>">
-                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>"> 
-                    <input type="hidden" name="quantity" value="1">
-                    <button class="btn btn-outline-primary" type="submit">Add to cart</button>
-                </form>  
+                <div style="float:left">
+                    <form class="d-flex" action="/cart/addItem" method="POST">
+                        <input type="hidden" name="productId" value="<%= product.id %>">
+                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>"> 
+                        <input type="hidden" name="quantity" value="1">
+                        <button class="btn btn-outline-primary" type="submit">Add to cart</button>
+                    </form>  
+                </div>
+                <div style="float:right">
+                    <form class="d-flex" action="/wishlist/addItem" method="POST">
+                        <input type="hidden" name="productId" value="<%= product.id %>">
+                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>"> 
+                        <input type="hidden" name="quantity" value="1">
+                        <button class="btn btn-outline-info" type="submit">Add to wishlist</button>
+                    </form>  
+                </div>
             </div>
         </div>
     <hr>

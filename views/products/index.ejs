@@ -40,8 +40,17 @@
                             <label>Price</label>
                             <p><%= product.price %> <%= product.currency %></p>
                             <div style="float:right">
-                                <form class="align-self-end" action="/categories/menswear/<%= params.category %>/<%= product.primary_category_id %>/<%= product.id %>" method="GET">
+                                <form class="align-self-end" action="/cart/addItem" method="POST">
+                                    <input type="hidden" name="productId" value="<%= product.id %>">
+                                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                                    <input type="hidden" name="quantity" value="1">
                                     <button class="btn btn-outline-primary" type="submit">Add to cart</button>
+                                </form>
+                                <form class="align-self-end" action="/wishlist/addItem" method="POST">
+                                    <input type="hidden" name="productId" value="<%= product.id %>">
+                                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button class="btn btn-outline-info" type="submit">Add to Wishlist</button>
                                 </form>
                             </div>
                             <div style="float:left">
@@ -96,6 +105,12 @@
                                     <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
                                     <input type="hidden" name="quantity" value="1">
                                     <button class="btn btn-outline-primary" type="submit">Add to cart</button>
+                                </form>
+                                <form class="align-self-end" action="/wishlist/addItem" method="POST">
+                                    <input type="hidden" name="productId" value="<%= product.id %>">
+                                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button class="btn btn-outline-info" type="submit">Add to Wishlist</button>
                                 </form>
                             </div>
                             <div style="float:left">

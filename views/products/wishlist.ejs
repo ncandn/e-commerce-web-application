@@ -38,32 +38,27 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <form class="d-flex">
-                            <button class="btn btn-outline-success" type="submit">Order</button>
-                        </form>
-                    </div>
-                    <div class="col">
-                        <form class="d-flex" action="cart/removeItem?_method=DELETE" method="POST">
+                        <form class="d-flex" action="wishlist/removeItem?_method=DELETE" method="POST">
                             <input type="hidden" name="productId" value="<%= product.productId %>">
                             <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
-                            <button class="btn btn-outline-danger" type="submit">Remove from cart</button>
+                            <button class="btn btn-outline-danger" type="submit">Remove from wishlist.</button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col">
-                <form class="d-flex" action="cart/changeItemQuantity" method="POST">
+                <form class="d-flex" action="wishlist/changeItemQuantity" method="POST">
                     <input type="hidden" name="productId" value="<%= product.productId %>">
                     <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
                     <input type="hidden" name="quantity" value="<%= product.quantity + 1 %>">
-                    <button class="btn btn-outline-info" type="submit">Add one more to the cart.</button>
+                    <button class="btn btn-outline-info" type="submit">Add one more to the wishlist.</button>
                 </form>
 
-                <form class="d-flex" action="cart/changeItemQuantity" method="POST">
+                <form class="d-flex" action="wishlist/changeItemQuantity" method="POST">
                     <input type="hidden" name="productId" value="<%= product.productId %>">
                     <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
                     <input type="hidden" name="quantity" value="<%= product.quantity - 1 %>">
-                    <button class="btn btn-outline-info" type="submit">Remove one from the cart.</button>
+                    <button class="btn btn-outline-info" type="submit">Remove one from the wishlist.</button>
                 </form>
             </div>
         </div>

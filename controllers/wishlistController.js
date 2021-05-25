@@ -23,7 +23,7 @@ const getWishlist = async(req,res)=>{
 const addWishlist = async(req, res)=>{
     const tokenAPI = req.cookies.axios_token
     try{
-        const cartAPI = await axios.post(`${url}cart/addItem`, {
+        const wlAPI = await axios.post(`${url}wishlist/addItem`, {
             "secretKey" : secret_key,
             "productId" : req.body.productId,
             "variantId" : req.body.variantId,
@@ -33,7 +33,7 @@ const addWishlist = async(req, res)=>{
                 'Authorization': `Bearer ${tokenAPI}`
             }
         })
-        res.redirect('/cart')
+        res.redirect('/wishlist')
     }catch(err){
         res.render('error', {error : err.response.data.error})
     }
@@ -42,7 +42,7 @@ const addWishlist = async(req, res)=>{
 const changeQuantity = async(req, res)=>{
     const tokenAPI = req.cookies.axios_token
     try{
-        const cartAPI = await axios.post(`${url}cart/changeItemQuantity`, {
+        const wlAPI = await axios.post(`${url}wishlist/changeItemQuantity`, {
             "secretKey" : secret_key,
             "productId" : req.body.productId,
             "variantId" : req.body.variantId,
@@ -52,7 +52,7 @@ const changeQuantity = async(req, res)=>{
                 'Authorization' : `Bearer ${tokenAPI}`
             }
         })
-        res.redirect('/cart')
+        res.redirect('/wishlist')
     }catch(err){
         res.render('error', err.resposnse.data.error)
     }
@@ -62,7 +62,7 @@ const removeWishlist = async(req, res) =>{
     const tokenAPI = req.cookies.axios_token
 
     try{
-        const cartAPI = await axios.delete(`${url}cart/removeItem` ,{
+        const cartAPI = await axios.delete(`${url}wishlist/removeItem` ,{
             headers: {
                 'Authorization' : `Bearer ${tokenAPI}`
             },
@@ -72,7 +72,7 @@ const removeWishlist = async(req, res) =>{
                 "variantId" : req.body.variantId
             }
         })
-        res.redirect('/cart')
+        res.redirect('/wishlist')
 
     }catch(err){
         res.render('error', {error : err.response.data.error})

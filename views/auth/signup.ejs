@@ -4,6 +4,13 @@
             <h3>Please Sign Up</h3>
             <hr>
         </div>
+        <% if(typeof alert != 'undefined'){ %> 
+            <% alert.forEach(function(error,index){ %> 
+                <div class="alert alert-warning" role="alert">
+                    <%= error.msg %> 
+                </div>
+            <% }) %> 
+        <% } %> 
         <div class="container">
             <label for="inputName" class="sr-only">Name</label>
             <input name="name" type="text" id="inputName" class="form-control" placeholder="Name" required="">
@@ -17,6 +24,11 @@
         <div class="container">
             <label for="inputPassword" class="sr-only">Password</label>
             <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+        </div>
+        <br>
+        <div class="container">
+            <label for="inputPasswordConf" class="sr-only">Password Confirmation</label>
+            <input name="passwordConf" type="password" id="inputPasswordConf" class="form-control" placeholder="Password" required="">
         </div>
         <br>
         <div class="container">

@@ -13,8 +13,8 @@ const orderPage = async (req,res)=>{
         })
         res.locals.nav = ["order"]
         res.render('orders/index', {cart : cartAPI.data.items})
-    } catch {
-        res.redirect('/')
+    } catch(err) {
+        res.render('error', {error : err.response.data.error})
     }
 }
 

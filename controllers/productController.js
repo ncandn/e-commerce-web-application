@@ -4,22 +4,30 @@ const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
 
 // show products
 const product_home = async(req,res)=>{
-    const osfAPI = await axios.get(`${url}products/product_search?primary_category_id=${req.params.child}&secretKey=${secret_key}`)
-    res.locals.nav = ["categories", req.params.parent, req.params.category, req.params.child]
-    res.render('products/index', {products : osfAPI.data, params : req.params})
+    try{
+        const osfAPI = await axios.get(`${url}products/product_search?primary_category_id=${req.params.child}&secretKey=${secret_key}`)
+        res.locals.nav = ["categories", req.params.parent, req.params.category, req.params.child]
+        res.render('products/index', {products : osfAPI.data, params : req.params})
+    }catch(err){
+        res.render('error', {error : err.response.data.error})
+    }
 }
 
 // show a specific product
 const product_spec = async(req,res)=>{
-    const osfAPI = await axios.get(`${url}products/product_search?primary_category_id=${req.params.child}&secretKey=${secret_key}`)
-    let product = {}
-    osfAPI.data.forEach(function(item,index){
-        if(item.id == req.params.product_id){
-            product = item
-        }
-    })
-    res.locals.nav = ["categories", req.params.parent, req.params.category, req.params.child, product.id]
-    res.render('products/product_search', {product, params : req.params})   
+    try{
+        const osfAPI = await axios.get(`${url}products/product_search?primary_category_id=${req.params.child}&secretKey=${secret_key}`)
+        let product = {}
+        osfAPI.data.forEach(function(item,index){
+            if(item.id == req.params.product_id){
+                product = item
+            }
+        })
+        res.locals.nav = ["categories", req.params.parent, req.params.category, req.params.child, product.id]
+        res.render('products/product_search', {product, params : req.params})   
+    }catch(err){
+        res.render('error', {error : err.response.data.error})
+    }
 }
 
 const product_browse = async (req,res)=>{

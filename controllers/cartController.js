@@ -12,6 +12,7 @@ const getCart = async(req,res)=>{
                 'Authorization': `Bearer ${tokenAPI}`
             }
         })
+        res.locals.nav = ["cart"]
         res.render('products/cart', {cart : cartAPI.data})
     }catch(err){
         res.render('error', {error : err.response.data.error})

@@ -1,0 +1,15 @@
+<header>
+    <div class="container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb"> 
+                <% var path = '' %> 
+                <% nav.forEach(function(crumb,index){ %>
+                    <% path += "/" %>
+                    <% path += crumb %> 
+                    <li class="breadcrumb-item"><a href="<%= path %> "><%= crumb.charAt(0).toUpperCase() + crumb.slice(1)%></a></li>
+                <% }) %>  
+                <li class="breadcrumb-item active" aria-current="page"></li>
+            </ol>
+        </nav>
+    </div>
+</header>

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/', (req, res) => {
+    res.locals.nav = ["home"]
     res.render('index', {active_user : req.cookies.token})
 })
 

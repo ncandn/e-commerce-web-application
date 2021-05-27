@@ -14,6 +14,7 @@ const getWishlist = async(req,res)=>{
                 "secretKey" : `${secret_key}`
             }
         })
+        res.locals.nav = ["wishlist"]
         res.render('products/wishlist', {wishlist : wlAPI.data})
     }catch(err){
         res.render('error', {error : err.response.data.error})

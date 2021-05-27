@@ -5,8 +5,8 @@ const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
 // home
 const category_home = async (req,res)=>{
     try {
+        res.locals.nav = ["categories"]
         res.render('categories/index')
-        console.log("Cookies: " + req.cookies.token)
     } catch {
         res.redirect('/')
     }
@@ -26,6 +26,7 @@ const category_spec = async(req,res)=>{
                 if(category.id.charAt(0) == 'w' && category.parent_category_id == 'womens')
                     filter.push(category)
             }
+            res.locals.nav = ["categories", req.params.category]
         } else{
             if(req.params.parent == 'menswear'){
                 if(category.id.charAt(0) == 'm' && category.parent_category_id == req.params.category)
@@ -34,8 +35,10 @@ const category_spec = async(req,res)=>{
                 if(category.id.charAt(0) == 'w' && category.parent_category_id == req.params.category && category.name != 'Feeling Red')
                     filter.push(category)
             }
+            res.locals.nav = ["categories", req.params.parent, req.params.category]
         }
     })
+    
     res.render(`categories/categories`, {categories : filter, params : req.params})
 }
 

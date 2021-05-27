@@ -7,6 +7,7 @@ const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
 const getSignin = async (req,res)=>{
     try {
         res.render('auth/signin')
+        res.locals.nav = ["auth", "signin"]
     } catch {
         res.redirect('/')
     }
@@ -25,6 +26,7 @@ const getSignout = async (req,res)=>{
 const getSignup = async (req,res)=>{
     try {
         res.render('auth/signup')
+        res.locals.nav = ["auth", "signup"]
     } catch {
         res.redirect('/')
     }
@@ -48,7 +50,7 @@ const authSignin = async (req,res)=>{
         "createdAt" : authAPI.data.user.createdAt
     }
 
-    const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '10m'})
+    const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '25m'})
 
     res.cookie('axios_token', authAPI.data.token, {
         seucre : false,

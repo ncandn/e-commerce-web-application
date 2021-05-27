@@ -1,20 +1,4 @@
-<header>
-    <div class="container">
-        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/categories">Categories</a></li>
-            <li class="breadcrumb-item active" aria-current="page">
-                <script>
-                    var url = location.href
-                    var url_parts = url.replace(/\/\s*$/,'').split('/')
-                    document.write(url_parts[4].charAt(0).toUpperCase() + url_parts[4].slice(1))
-                </script>
-            </li>
-            </ol>
-        </nav>
-    </div>
-</header>
+<%- include('../misc/breadcrumbs.ejs') %> 
 
 <div class="container">
     <% categories.forEach(function(category, index){ %> 

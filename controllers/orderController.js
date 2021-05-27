@@ -11,6 +11,7 @@ const orderPage = async (req,res)=>{
                 'Authorization': `Bearer ${tokenAPI}`
             }
         })
+        res.locals.nav = ["order"]
         res.render('orders/index', {cart : cartAPI.data.items})
     } catch {
         res.redirect('/')

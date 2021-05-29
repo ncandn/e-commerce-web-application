@@ -1,4 +1,6 @@
-<%- include('../misc/breadcrumbs.ejs') %> 
+<% if(params.category){ %> 
+    <%- include('../misc/breadcrumbs.ejs') %> 
+<% } %> 
 
 <% products.forEach(function(product, index){ %> 
     <% if(!params.category){ %> 
@@ -16,18 +18,23 @@
                             <label>Price</label>
                             <p><%= product.price %> <%= product.currency %></p>
                             <div style="float:right">
-                                <form class="align-self-end" action="/cart/addItem" method="POST">
-                                    <input type="hidden" name="productId" value="<%= product.id %>">
-                                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button class="btn btn-outline-primary" type="submit">Add to cart</button>
-                                </form>
-                                <form class="align-self-end" action="/wishlist/addItem" method="POST">
-                                    <input type="hidden" name="productId" value="<%= product.id %>">
-                                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button class="btn btn-outline-info" type="submit">Add to Wishlist</button>
-                                </form>
+                                <% if(product.variants == 'undefined'){ %>
+                                    <button class="btn btn-outline-primary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Out of stock." disabled>Add to cart</button>
+                                    <button class="btn btn-outline-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Out of stock." disabled>Add to Wishlist</button>
+                                <% } else{ %>
+                                    <form class="align-self-end" action="/cart/addItem" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button class="btn btn-outline-primary" type="submit">Add to cart</button>
+                                    </form>
+                                    <form class="align-self-end" action="/wishlist/addItem" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button class="btn btn-outline-info" type="submit">Add to Wishlist</button>
+                                    </form>
+                                <% } %>  
                             </div>
                             <div style="float:left">
                                 <% if(product.primary_category_id.charAt(0) == 'm'){ %> 
@@ -76,18 +83,27 @@
                             <label>Price</label>
                             <p><%= product.price %> <%= product.currency %></p>
                             <div style="float:right">
-                                <form class="align-self-end" action="/cart/addItem" method="POST">
-                                    <input type="hidden" name="productId" value="<%= product.id %>">
-                                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button class="btn btn-outline-primary" type="submit">Add to cart</button>
-                                </form>
-                                <form class="align-self-end" action="/wishlist/addItem" method="POST">
-                                    <input type="hidden" name="productId" value="<%= product.id %>">
-                                    <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button class="btn btn-outline-info" type="submit">Add to Wishlist</button>
-                                </form>
+                                <% if(product.variants != ''){ %>
+                                    <form class="align-self-end" action="/cart/addItem" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button class="btn btn-outline-primary" type="submit">Add to cart</button>
+                                    </form>
+                                    <form class="align-self-end" action="/wishlist/addItem" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button class="btn btn-outline-info" type="submit">Add to Wishlist</button>
+                                    </form>
+                                <% } else{ %>
+                                    <form class="align-self-end">
+                                        <button class="btn btn-outline-primary" type="submit" disabled>Out of stock.</button>
+                                    </form>
+                                    <form class="align-self-end">
+                                        <button class="btn btn-outline-info" type="submit" disabled>Out of stock.</button>
+                                    </form>
+                                <% } %>  
                             </div>
                             <div style="float:left">
                                 <% if(product.primary_category_id.charAt(0) == 'm'){ %> 
@@ -119,4 +135,9 @@
             $(".moreResults").hide()
         }
     })
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
 </script>

@@ -2,7 +2,7 @@ const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
 const secret_key = process.env.SECRET_KEY
-const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
+const url = process.env.URL
 
 
 const getSignin = async (req,res)=>{

@@ -1,7 +1,16 @@
 const axios = require('axios')
-const jwt = require('jsonwebtoken')
 const secret_key = process.env.SECRET_KEY
-const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
+const url = process.env.URL
+const paypal = require('paypal-rest-sdk');
+const { get } = require('../routes');
+var total_sum = 0
+var default_address = 'default address'
+
+paypal.configure({
+    'mode': 'sandbox', 
+    'client_id': process.env.PAYPAL_CLI_ID,
+    'client_secret': process.env.PAYPAL_CLI_SK
+  });
 
 const orderPage = async (req,res)=>{
     const tokenAPI = req.cookies.axios_token
@@ -18,4 +27,126 @@ const orderPage = async (req,res)=>{
     }
 }
 
-module.exports = {orderPage}
+const orderPost = async (req,res)=>{
+    const tokenAPI = req.cookies.axios_token
+    try{
+        const cartItems = []
+        const cartAPI = await axios.get(`${url}cart?secretKey=${secret_key}`, {
+            headers: {
+                'Authorization': `Bearer ${tokenAPI}`
+            }
+        })
+
+        for(const item of cartAPI.data.items){
+            cartItems.push({
+                "name": item.productId,
+                "sku": item.variant.product_id,
+                "price": item.variant.price,
+                "currency": "USD",
+                "quantity": item.quantity
+            })
+        }
+
+        console.log(cartItems)
+
+        const create_payment_json = {
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "redirect_urls": {
+                "return_url": "http://localhost:3000/order/success",
+                "cancel_url": "http://localhost:3000/order/failure"
+            },
+            "transactions": [{
+                "item_list": {
+                    "items": cartItems
+                },
+                "amount": {
+                    "currency": "USD",
+                    "total": req.body.sum
+                },
+                "description": "OSF Academy PayPal transaction."
+            }]
+        }
+
+        total_sum = req.body.sum
+        default_address = req.body.address
+
+        
+
+        paypal.payment.create(create_payment_json, function (error, payment) {
+            if (error) {
+                throw error
+            } else {
+                for(let i = 0; i < payment.links.length; i++){
+                    if(payment.links[i].rel === 'approval_url'){
+                        res.redirect(payment.links[i].href)
+                    }
+                }
+            }
+        })
+    }catch(err){
+        res.render('error', {error: err})
+    }
+}
+
+const orderSuccess = async(req,res)=>{
+    try{
+        const tokenAPI = req.cookies.axios_token
+        const payerID = req.query.PayerID
+        const paymentID = req.query.paymentID
+        const cartAPI = await axios.get(`${url}cart?secretKey=${secret_key}`, {
+            headers: {
+                'Authorization': `Bearer ${tokenAPI}`
+            }
+        })
+
+        const exec_payment_json = {
+            "payer_id": payerID,
+            "transactions": [{
+                "amount":{
+                    "currency": "USD",
+                    "total": total_sum
+                }
+            }]
+        }
+
+        paypal.payment.execute(paymentID, exec_payment_json, async function(error, payment){
+            if(error){
+                throw error
+            }else{
+                await axios.post(`${url}orders` ,{
+                    "secretKey" : secret_key,
+                    "address" : default_address,
+                    "paymentId" : paymentID,
+                    "items" : cartAPI.data.items
+                }, {
+                    headers : {
+                        'Authorization' : `Bearer ${tokenAPI}`
+                    }
+                })
+                console.log(JSON.stringify(payment))
+            }
+        })
+
+        for(const item in cartAPI.data.items){
+            await axios.delete(`${url}cart/removeItem` ,{
+                headers: {
+                    'Authorization' : `Bearer ${tokenAPI}`
+                },
+                data: {
+                    "secretKey" : secret_key,
+                    "productId" : item.productId,
+                    "variantId" : item.variant.product_id
+                }
+            })
+        }
+        
+        res.render('orders/success')
+    }catch(err){
+        res.render('error', {error: err})
+    }
+}
+
+module.exports = {orderPage, orderPost, orderSuccess}

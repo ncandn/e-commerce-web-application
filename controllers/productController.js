@@ -1,6 +1,7 @@
 const axios = require('axios')
 const secret_key = process.env.SECRET_KEY
-const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
+const url = process.env.URL
+
 
 // show products
 const product_home = async(req,res)=>{
@@ -49,8 +50,6 @@ const product_browse = async (req,res)=>{
             items.data.forEach(function(product,index){
                 for(const param of key){
                     if(product !== undefined){
-                        console.log(product.name + ' ' + product.name.toLowerCase().includes(param))
-                        console.log(product.page_title + ' ' + product.page_title.toLowerCase().includes(param))
                         if(product.name.toLowerCase().includes(param) || product.page_title.toLowerCase().includes(param)){
                             product_arr.push(product)
                         }

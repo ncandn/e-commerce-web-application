@@ -2,38 +2,57 @@
    
     <h1>WISHLIST</h1>
 
-    <% wishlist.items.forEach(function (product, index){ %>
+    <% wishlist.forEach(function (product, index){ %>
         <hr>
-        <h2><%= product.productId %> </h2>
-        <p>Variations: <%= product.variant.variation_values.color %> <%= product.variant.variation_values.size %></p>
-        <p>Price: <%= product.variant.price %> USD</p>
-        <p>Quantity: <%= product.quantity %></p>
         <div class="row">
             <div class="col">
+                <% for(const images in product.info.image_groups){ %> 
+                    <% if(images.variation_value && product.actual.variant.variation_values.color && images.view_type == 'large' && images.variation_value == product.actual.variant.variation_values.color){ %> 
+                        <img src="/images/<%= images.images[0].link %>" alt="<%= images.images[0].alt %>">
+                        <% break %> 
+                    <% }else{ %>
+                        <img src="/images/<%= product.info.image_groups[0].images[0].link %>" alt="<%= product.info.image_groups[0].images[0].alt %>">
+                        <% break %> 
+                    <% } %> 
+                <% } %> 
+            </div>
+            <div class="col">
+                <h2><%= product.info.name %></h2>
+                <br>
+                <p><b>Variations:</b></p>
+                <% for(const variation in product.actual.variant.variation_values){ %>
+                    <p><b><%= variation %></b> - <%= product.actual.variant.variation_values[variation] %> </p>
+                <% } %> 
+                <p><b>Price: </b><%= product.actual.variant.price%> USD</p>
+                <p><b>Quantity: </b><%= product.actual.quantity %></p>
                 <div class="row">
                     <div class="col">
-                        <form class="d-flex" action="wishlist/removeItem?_method=DELETE" method="POST">
-                            <input type="hidden" name="productId" value="<%= product.productId %>">
-                            <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
-                            <button class="btn btn-outline-danger" type="submit">Remove from wishlist.</button>
+                        <div class="row">
+                            <div class="col">
+                                <form class="d-flex" action="wishlist/removeItem?_method=DELETE" method="POST">
+                                    <input type="hidden" name="productId" value="<%= product.actual.productId %>">
+                                    <input type="hidden" name="variantId" value="<%= product.actual.variant.product_id %>">
+                                    <button class="btn btn-outline-danger" type="submit">Remove from wishlist.</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <form class="d-flex" action="wishlist/changeItemQuantity" method="POST">
+                            <input type="hidden" name="productId" value="<%= product.actual.productId %>">
+                            <input type="hidden" name="variantId" value="<%= product.actual.variant.product_id %>">
+                            <input type="hidden" name="quantity" value="<%= product.actual.quantity + 1 %>">
+                            <button class="btn btn-outline-info" type="submit">Add one more to the wishlist.</button>
+                        </form>
+                    
+                        <form class="d-flex" action="wishlist/changeItemQuantity" method="POST">
+                            <input type="hidden" name="productId" value="<%= product.actual.productId %>">
+                            <input type="hidden" name="variantId" value="<%= product.actual.variant.product_id %>">
+                            <input type="hidden" name="quantity" value="<%= product.actual.quantity - 1 %>">
+                            <button class="btn btn-outline-info" type="submit">Remove one from the wishlist.</button>
                         </form>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <form class="d-flex" action="wishlist/changeItemQuantity" method="POST">
-                    <input type="hidden" name="productId" value="<%= product.productId %>">
-                    <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
-                    <input type="hidden" name="quantity" value="<%= product.quantity + 1 %>">
-                    <button class="btn btn-outline-info" type="submit">Add one more to the wishlist.</button>
-                </form>
-
-                <form class="d-flex" action="wishlist/changeItemQuantity" method="POST">
-                    <input type="hidden" name="productId" value="<%= product.productId %>">
-                    <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
-                    <input type="hidden" name="quantity" value="<%= product.quantity - 1 %>">
-                    <button class="btn btn-outline-info" type="submit">Remove one from the wishlist.</button>
-                </form>
             </div>
         </div>
     <% }) %> 

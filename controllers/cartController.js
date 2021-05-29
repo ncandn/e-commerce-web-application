@@ -1,19 +1,25 @@
 const axios = require('axios')
-const jwt = require('jsonwebtoken')
 const secret_key = process.env.SECRET_KEY
-const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
+const url = process.env.URL
 
 
 const getCart = async(req,res)=>{
     const tokenAPI = req.cookies.axios_token
     try{
+        const cartItems = []
         const cartAPI = await axios.get(`${url}cart?secretKey=${secret_key}`, {
             headers: {
                 'Authorization': `Bearer ${tokenAPI}`
             }
         })
+
+        for(const item of cartAPI.data.items){
+            const itemAPI = await axios.get(`${url}products/product_search?id=${item.productId}&secretKey=${secret_key}`)
+            cartItems.push({info: itemAPI.data[0], actual: item})
+        }
+
         res.locals.nav = ["cart"]
-        res.render('products/cart', {cart : cartAPI.data})
+        res.render('products/cart', {cart : cartItems})
     }catch(err){
         res.render('error', {error : err.response.data.error})
     }
@@ -22,7 +28,7 @@ const getCart = async(req,res)=>{
 const addCart = async(req, res)=>{
     const tokenAPI = req.cookies.axios_token
     try{
-        const cartAPI = await axios.post(`${url}cart/addItem`, {
+        await axios.post(`${url}cart/addItem`, {
             "secretKey" : secret_key,
             "productId" : req.body.productId,
             "variantId" : req.body.variantId,
@@ -41,7 +47,7 @@ const addCart = async(req, res)=>{
 const changeQuantity = async(req, res)=>{
     const tokenAPI = req.cookies.axios_token
     try{
-        const cartAPI = await axios.post(`${url}cart/changeItemQuantity`, {
+        await axios.post(`${url}cart/changeItemQuantity`, {
             "secretKey" : secret_key,
             "productId" : req.body.productId,
             "variantId" : req.body.variantId,
@@ -61,7 +67,7 @@ const removeCart = async(req, res) =>{
     const tokenAPI = req.cookies.axios_token
 
     try{
-        const cartAPI = await axios.delete(`${url}cart/removeItem` ,{
+        await axios.delete(`${url}cart/removeItem` ,{
             headers: {
                 'Authorization' : `Bearer ${tokenAPI}`
             },

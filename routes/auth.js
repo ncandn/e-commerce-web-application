@@ -2,8 +2,6 @@ const express = require('express')
 const { check, validationResult } = require('express-validator')
 const router = express.Router()
 const authController = require("../controllers/authController")
-const authMiddleware = require("../middleware/authMiddleware")
-
 
 router.get('/signin', authController.getSignin)
 
@@ -23,7 +21,7 @@ router.post('/signup', [
         .normalizeEmail(),
     check('password', 'Password required, minimum 5 characters.')
         .exists()
-        .isLength({min : 3}),
+        .isLength({min : 5}),
     check('passwordConf', 'Passwords must match.')
         .custom((value, {req})=>{
             if(value !== req.body.password){

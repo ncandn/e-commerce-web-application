@@ -6,7 +6,7 @@
         <div class="col">
             <p>Ordering by: <%= user.name %> </p>
             <p>Email: <%= user.email %> </p>
-            <p>Adress: </p>
+            <p>Address: </p>
             <textarea class="form-control" name="address" id="address" rows="3" style="width: 500px; resize:none" placeholder="Address..."></textarea>
         </div>
         <div class="col">
@@ -28,10 +28,17 @@
             <p>Total: <%= total %> USD</p>
         </div>
         <div class="col">
-            <form class="d-flex" action="/order" method="GET">
+            <form class="d-flex" action="/order" method="POST">
+                <input type="hidden" name="address" id="addressId" value="default address">
+                <input type="hidden" name="sum" value="<%= total %>">
                 <button class="btn btn-primary" type="submit">Order</button>
             </form>
         </div>
     </div>
     <hr>
 </div>
+
+<script>
+    var addr = $('textarea#address').val()
+    document.getElementById('addressId').value = addr
+</script>

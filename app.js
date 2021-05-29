@@ -7,6 +7,7 @@ const methodOverride = require('method-override')
 const { checkUser } = require('./middleware/authMiddleware')
 require('dotenv').config()
 
+
 /* Router Initialization */
 const indexRouter = require('./routes/index')
 const productsRouter = require('./routes/products')

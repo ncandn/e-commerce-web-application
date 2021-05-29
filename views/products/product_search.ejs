@@ -2,11 +2,10 @@
 
 <div class="container">
     <hr>
-        <% var spec %> 
         <h2><%= product.name %> </h2>
         <div class="row">
             <div class="col">
-                <img src="/images/<%= product.image_groups[0].images[0].link %>" alt="<%= product.image_groups[0].images[0].alt %>">
+                <img id="prod-img" src="/images/<%= product.image_groups[0].images[0].link %>" alt="<%= product.image_groups[0].images[0].alt %>">
             </div>
             <div class="col">
                 <p><%= product.page_description %>.</p>
@@ -17,7 +16,13 @@
                         <% variation.values.forEach(function(value, index){ %>
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-primary">
-                                  <input type="radio" onclick="getradval(this)" name="<%= variation.name %>" value="<%= value.value %>" id="<%= value.value %>" autocomplete="off" checked> <%= value.name %> 
+                                    <% let tempLink %> 
+                                    <% product.image_groups.forEach(function(img, index){ %>
+                                        <% if(typeof img.variation_value != 'undefined' && img.view_type == 'large' && img.variation_value == value.value){ %> 
+                                            <% tempLink = img.images[0].link %>
+                                        <% } %>  
+                                    <% }) %>  
+                                    <input type="radio" onclick="getradval(this)" data-img="<%= tempLink %>" name="<%= variation.name %>" value="<%= value.value %>" id="<%= value.value %>" autocomplete="off" checked> <%= value.name %> 
                                 </label>
                             </div>
                          <% }) %> 
@@ -26,22 +31,35 @@
                 <br>
                 <label><%= product.price %> <%= product.currency %> </label>
                 <br>
-                <div style="float:left">
-                    <form class="d-flex" action="/cart/addItem" method="POST">
-                        <input type="hidden" name="productId" value="<%= product.id %>">
-                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>"> 
-                        <input type="hidden" name="quantity" value="1">
-                        <button class="btn btn-outline-primary" type="submit">Add to cart</button>
-                    </form>  
-                </div>
-                <div style="float:right">
-                    <form class="d-flex" action="/wishlist/addItem" method="POST">
-                        <input type="hidden" name="productId" value="<%= product.id %>">
-                        <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>"> 
-                        <input type="hidden" name="quantity" value="1">
-                        <button class="btn btn-outline-info" type="submit">Add to wishlist</button>
-                    </form>  
-                </div>
+                <% if(product.variants != ''){ %>
+                    <div style="float:left">
+                        <form class="d-flex" action="/cart/addItem" method="POST">
+                            <input type="hidden" name="productId" value="<%= product.id %>">
+                            <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                            <input type="hidden" name="quantity" value="1">
+                            <button class="btn btn-outline-primary" type="submit">Add to cart</button>
+                        </form>  
+                    </div>
+                    <div style="float:right">
+                        <form class="d-flex" action="/wishlist/addItem" method="POST">
+                            <input type="hidden" name="productId" value="<%= product.id %>">
+                            <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>"> 
+                            <input type="hidden" name="quantity" value="1">
+                            <button class="btn btn-outline-info" type="submit">Add to wishlist</button>
+                        </form>  
+                    </div>
+                <% }else{ %>
+                    <div style="float:left">
+                        <form class="d-flex">
+                            <button class="btn btn-outline-primary" type="submit" disabled>Out of stock.</button>
+                        </form>
+                    </div>
+                    <div style="float:right">
+                        <form class="d-flex">
+                            <button class="btn btn-outline-primary" type="submit" disabled>Out of stock.</button>
+                        </form>
+                    </div>
+                <% } %>  
             </div>
         </div>
     <hr>
@@ -49,7 +67,10 @@
 
 <script>
     function getradval(elem) {
-        var radval = $(`input[name="${elem.name}"]:checked`).val();
-        alert(radval)
+        var docval = document.getElementById(elem.id).dataset.img
+        if(docval != '')
+            document.getElementById("prod-img").src = "/images/" + docval
+        alert(elem.value)
+
     }
 </script>

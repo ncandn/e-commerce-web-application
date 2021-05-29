@@ -1,6 +1,6 @@
 const axios = require('axios')
 const secret_key = process.env.SECRET_KEY
-const url = `https://osf-digital-backend-academy.herokuapp.com/api/`
+const url = process.env.URL
 
 // home
 const category_home = async (req,res)=>{

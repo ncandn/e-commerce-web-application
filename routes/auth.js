@@ -1,5 +1,5 @@
 const express = require('express')
-const { check } = require('express-validator')
+const { check } = require('express-validator') // Input testing
 const router = express.Router()
 const authController = require("../controllers/authController")
 
@@ -11,6 +11,7 @@ router.get('/signout', authController.getSignout)
 
 router.post('/signin', authController.authSignin)
 
+// Name(3 chars), email(valid), password(5 chars) and conf(must match with password) must exists.
 router.post('/signup', [
     check('name', 'Name required, minimum 3 characters.')
         .exists()

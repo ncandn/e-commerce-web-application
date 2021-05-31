@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const categoryController = require("../controllers/categoryController")
 const productController = require("../controllers/productController")
-const authMiddleware = require("../middleware/authMiddleware")
 
 // get homepage
 router.get('/', categoryController.category_home)

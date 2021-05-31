@@ -3,6 +3,7 @@
 <% } %> 
 
 <% products.forEach(function(product, index){ %> 
+    <!-- HANDLED THROUGH CATEGORIES -->
     <% if(!params.category){ %> 
         <div class="container">
             <hr>
@@ -68,7 +69,9 @@
                 </div>
             </div>
         </div>
+    <!-- HANDLED THROUGH CATEGORIES -->
     <% } else{ %>
+    <!-- HANDLED THROUGH SEARCH BUTTON -->
         <div class="container">
             <div class="row">
                 <div class="col-md" style="display: none;">
@@ -122,6 +125,7 @@
             </div>
         </div>
     <% } %>  
+    <!-- HANDLED THROUGH SEARCH BUTTON -->
 <% }) %> 
 <div style="display: flex; justify-content: center; margin-top: 5px;">
     <button class="btn btn-success center moreResults">More Results</button>

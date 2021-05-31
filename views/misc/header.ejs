@@ -12,7 +12,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-auto">
             <% if(!nav){ %>
               <% var nav = [] %>
-            <% }else{ %>  
+            <% }else{ // Breadcrumbs exist %>  
               <% if(nav.includes("categories")){ %> 
                 <li class="nav-item">
                   <a class="nav-link active" style="color:#fff1e1;text-shadow:0 0 8px #5d90dd;background-color:#12262c" href="/categories">Categories</a>
@@ -22,7 +22,7 @@
                   <a class="nav-link active" style="color:#fff1e1" href="/categories">Categories</a>
                 </li>
               <% } %> 
-              <% if(!user){ %>
+              <% if(!user){ // There is no user %>
                 <% if(nav.includes("auth")){ %> 
                   <li>
                       <a class="nav-link active" style="color:#fff1e1;text-shadow:0 0 8px #5d90dd;background-color:#12262c" href="/auth/signin">Signin</a>
@@ -32,7 +32,7 @@
                     <a class="nav-link active" style="color:#fff1e1" href="/auth/signin">Signin</a>
                   </li>
                 <% } %>  
-              <% }else{ %> 
+              <% }else{ // There is a user %> 
                 <% if(nav.includes("cart")){ %> 
                   <li>
                     <a class="nav-link active" style="color:#fff1e1;text-shadow:0 0 8px #5d90dd;background-color:#12262c" href="/cart">Cart</a>

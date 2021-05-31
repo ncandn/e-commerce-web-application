@@ -1,9 +1,9 @@
 /* Express Initialization */
 const express = require('express')
 const app = express()
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser') // Reach out to cookies
 const expressLayouts = require('express-ejs-layouts')
-const methodOverride = require('method-override')
+const methodOverride = require('method-override') // Delete/Put Requests
 const { checkUser } = require('./middleware/authMiddleware')
 require('dotenv').config()
 

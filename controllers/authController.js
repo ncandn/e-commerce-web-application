@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator')
 const secret_key = process.env.SECRET_KEY
 const url = process.env.URL
 
-
+// Get signin page
 const getSignin = async (req,res)=>{
     try {
         res.render('auth/signin')
@@ -14,16 +14,18 @@ const getSignin = async (req,res)=>{
     }
 }
 
+// Signout from the system
 const getSignout = async (req,res)=>{
     try {
-        res.cookie('token', '', {maxAge : 1})
-        res.cookie('axios_token', '', {maxAge : 1})
+        res.cookie('token', '', {maxAge : 1})           /* Set cookies' lifespan to 1  */
+        res.cookie('axios_token', '', {maxAge : 1})     /* Cookies will die immediately */
         res.redirect('/')
     } catch {
         res.redirect('/')
     }
 }
 
+// Get signup page
 const getSignup = async (req,res)=>{
     try {
         res.render('auth/signup')
@@ -33,8 +35,10 @@ const getSignup = async (req,res)=>{
     }
 }
 
+// Signin to the system.
 const authSignin = async (req,res)=>{
     try{
+        /* Create a user log for API */
         const user_log = {
             "secretKey" : secret_key,
             "email" : req.body.email,
@@ -43,6 +47,7 @@ const authSignin = async (req,res)=>{
 
         const authAPI = await axios.post(`${url}auth/signin`, user_log)
 
+        /* Create a user for JWT using API data */
         const user = {
             "secretKey" : secret_key,
             "email" : req.body.email,
@@ -51,8 +56,10 @@ const authSignin = async (req,res)=>{
             "createdAt" : authAPI.data.user.createdAt
         }
 
-        const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '55m'})
+        /* Create authorization token to login */
+        const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '25m'})
 
+        /* Set cookies */
         res.cookie('axios_token', authAPI.data.token, {
             seucre : false,
             httpOnly: true
@@ -69,13 +76,16 @@ const authSignin = async (req,res)=>{
     }
 }
 
+// Signup to the system
 const authSignup = async (req,res)=>{
+    /* Validate express-validator controls */
     const errors = validationResult(req)
     if(!errors.isEmpty()){
         const alert = errors.array()
         res.render('auth/signup', {alert})
     }else{
         try{
+            /* Send a post request to API */
             const authAPI = await axios.post(`${url}auth/signup`, {
                 "secretKey" : secret_key,
                 "name" : req.body.name,
@@ -83,6 +93,7 @@ const authSignup = async (req,res)=>{
                 "password" : req.body.password
             })
 
+            /* Create user for JWT auth */
             const user = {
                 "secretKey" : secret_key,
                 "email" : req.body.email,
@@ -91,7 +102,8 @@ const authSignup = async (req,res)=>{
                 "createdAt" : authAPI.data.user.createdAt
             }
 
-            const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '55m'})
+            /* User logged in */
+            const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '25m'})
 
             res.cookie('axios_token', authAPI.data.token, {
                 seucre : false,

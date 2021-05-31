@@ -9,7 +9,6 @@
                 </div>
                 <div class="col">
                     <% transaction.items.forEach(function(product, index){ %> 
-                   
                         <p><b>Product ID (Variant ID):</b> <%= product.productId %> (<%= product.variant.productId %>)</p>
                         <% for(const variation in product.variant.variation_values){ %>
                             <p><b><%= variation %>:</b> <%= product.variant.variation_values[variation] %> </p>

@@ -2,6 +2,7 @@ const axios = require('axios')
 const secret_key = process.env.SECRET_KEY
 const url = process.env.URL
 
+/* Everything is almost the same with cart */
 const getWishlist = async(req,res)=>{
     const tokenAPI = req.cookies.axios_token
     try{

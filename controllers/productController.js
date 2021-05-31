@@ -19,7 +19,7 @@ const product_spec = async(req,res)=>{
     try{
         const osfAPI = await axios.get(`${url}products/product_search?primary_category_id=${req.params.child}&secretKey=${secret_key}`)
         let product = {}
-        osfAPI.data.forEach(function(item,index){
+        osfAPI.data.forEach(function(item,index){ // Items match
             if(item.id == req.params.product_id){
                 product = item
             }
@@ -33,8 +33,10 @@ const product_spec = async(req,res)=>{
 
 const product_browse = async (req,res)=>{
 
-    const key = req.query.key.toString().toLowerCase().split(' ')
+    const key = req.query.key.toString().toLowerCase().split(' ') // Search query
 
+    /* Get every item in each category, then add them into an array */
+    /* Search through that array to find matching items */
     const all_categories = await axios.get(`${url}categories?secretKey=${secret_key}`)
     const category_arr = []
     all_categories.data.forEach(function(category,index){

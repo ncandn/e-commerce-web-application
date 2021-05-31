@@ -7,5 +7,4 @@ router.get('/', productController.product_home)
 /* Get A Product */
 router.get('/product_search', productController.product_browse)
 
-
 module.exports = router

@@ -33,7 +33,7 @@ const product_spec = async(req,res)=>{
 
 const product_browse = async (req,res)=>{
 
-    const key = req.query.key.toLowerCase().split(' ')
+    const key = req.query.key.toString().toLowerCase().split(' ')
 
     const all_categories = await axios.get(`${url}categories?secretKey=${secret_key}`)
     const category_arr = []
@@ -57,7 +57,7 @@ const product_browse = async (req,res)=>{
                 }
             })
         }catch(err){
-            console.log('stop')
+            // do nothing
         }
     }
     //res.send(product_arr)

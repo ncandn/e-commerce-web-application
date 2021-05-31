@@ -13,15 +13,16 @@
         <hr>
         <div class="row">
             <div class="col">
-                <% for(const images in product.info.image_groups){ %> 
-                    <% if(images.variation_value && product.actual.variant.variation_values.color && images.view_type == 'large' && images.variation_value == product.actual.variant.variation_values.color){ %> 
-                        <img src="/images/<%= images.images[0].link %>" alt="<%= images.images[0].alt %>">
-                        <% break %> 
-                    <% }else{ %>
-                        <img src="/images/<%= product.info.image_groups[0].images[0].link %>" alt="<%= product.info.image_groups[0].images[0].alt %>">
-                        <% break %> 
-                    <% } %> 
+                <% let imgflag = false %> 
+                <% for(const images of product.info.image_groups){ %> 
+                    <% if(typeof images.variation_value != 'undefined' && typeof product.actual.variant.variation_values.color != 'undefined' && images.view_type == 'large' && images.variation_value == product.actual.variant.variation_values.color){ %> 
+                        <% imgflag = true %> 
+                        <img src="/images/<%= images.images[0].link %>" alt="<%= images.images[0].alt %>">  
+                    <% } %>
                 <% } %> 
+                <% if(!imgflag){ %>
+                    <img src="/images/<%= product.info.image_groups[0].images[0].link %>" alt="<%= images.images[0].alt %>"> 
+                <% } %>  
             </div>
             <div class="col">
                 <h2><%= product.info.name %></h2>

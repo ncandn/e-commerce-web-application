@@ -6,9 +6,8 @@
                 <% nav.forEach(function(crumb,index){ %>
                     <% path += "/" %>
                     <% path += crumb %> 
-                    <li class="breadcrumb-item"><a href="<%= path %> "><%= crumb.charAt(0).toUpperCase() + crumb.slice(1)%></a></li>
+                    <li class="breadcrumb-item"><a href="<%= path %>" style="text-decoration:none;color:#d2601a;font-weight:300;"><%= crumb.charAt(0).toUpperCase() + crumb.slice(1)%></a></li>
                 <% }) %>  
-                <li class="breadcrumb-item active" aria-current="page"></li>
             </ol>
         </nav>
     </div>

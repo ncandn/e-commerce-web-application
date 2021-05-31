@@ -1,6 +1,6 @@
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
-const { check, validationResult } = require('express-validator')
+const { validationResult } = require('express-validator')
 const secret_key = process.env.SECRET_KEY
 const url = process.env.URL
 
@@ -51,7 +51,7 @@ const authSignin = async (req,res)=>{
             "createdAt" : authAPI.data.user.createdAt
         }
 
-        const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '25m'})
+        const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '55m'})
 
         res.cookie('axios_token', authAPI.data.token, {
             seucre : false,
@@ -73,9 +73,7 @@ const authSignup = async (req,res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
         const alert = errors.array()
-        res.render('auth/signup', {
-            alert
-        })
+        res.render('auth/signup', {alert})
     }else{
         try{
             const authAPI = await axios.post(`${url}auth/signup`, {
@@ -93,7 +91,7 @@ const authSignup = async (req,res)=>{
                 "createdAt" : authAPI.data.user.createdAt
             }
 
-            const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '25m'})
+            const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn : '55m'})
 
             res.cookie('axios_token', authAPI.data.token, {
                 seucre : false,
@@ -104,7 +102,6 @@ const authSignup = async (req,res)=>{
                 secure: false, 
                 httpOnly: true
             })
-
             res.redirect('/')
         }catch(err){
             res.render('error', {error : err.response.data.error})

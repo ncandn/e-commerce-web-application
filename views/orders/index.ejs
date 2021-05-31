@@ -1,14 +1,14 @@
 <div class="container">
     <h1>ORDER</h1>
     <hr>
-    
+    <% if(typeof alert != 'undefined'){ %> 
+        <% alert.forEach(function(error,index){ %> 
+            <div class="alert alert-warning" role="alert">
+                <%= error.msg %> 
+            </div>
+        <% }) %> 
+    <% } %> 
     <div class="row">
-        <div class="col">
-            <p>Ordering by: <%= user.name %> </p>
-            <p>Email: <%= user.email %> </p>
-            <p>Address: </p>
-            <textarea class="form-control" name="address" id="address" rows="3" style="width: 500px; resize:none" placeholder="Address..."></textarea>
-        </div>
         <div class="col">
             <% var total = 0 %>
             <% cart.forEach(function (product, index){ %>
@@ -21,24 +21,22 @@
                 </div>
             <% }) %> 
         </div>
+        <div class="col">
+            <p>Ordering by: <%= user.name %> </p>
+            <p>Email: <%= user.email %> </p>
+            <div class="col"></div>
+                <form action="/order" method="POST">
+                    <label for="address" class="sr-only">Address:</label>
+                    <input name="address" type="text" id="address" class="form-control" placeholder="Address" required="" autofocus="">
+                    <input type="hidden" name="sum" value="<%= total %>">
+                    <br>
+                    <button class="btn btn-primary" type="submit">Order</button>
+                </form>
+            </div>
+        </div>
     </div>
-    
-    <div class="row">
-        <div class="col">
-            <p>Total: <%= total %> USD</p>
-        </div>
-        <div class="col">
-            <form class="d-flex" action="/order" method="POST">
-                <input type="hidden" name="address" id="addressId" value="default address">
-                <input type="hidden" name="sum" value="<%= total %>">
-                <button class="btn btn-primary" type="submit">Order</button>
-            </form>
-        </div>
+    <div class="container" style="right: 0px">
+        <p><b>Total: <%= total %> USD</b></p>
     </div>
     <hr>
 </div>
-
-<script>
-    var addr = $('textarea#address').val()
-    document.getElementById('addressId').value = addr
-</script>

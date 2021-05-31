@@ -17,12 +17,18 @@
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-primary">
                                     <% let tempLink %> 
+                                    <% let tempVar %>
                                     <% product.image_groups.forEach(function(img, index){ %>
                                         <% if(typeof img.variation_value != 'undefined' && img.view_type == 'large' && img.variation_value == value.value){ %> 
                                             <% tempLink = img.images[0].link %>
                                         <% } %>  
                                     <% }) %>  
-                                    <input type="radio" onclick="getradval(this)" data-img="<%= tempLink %>" name="<%= variation.name %>" value="<%= value.value %>" id="<%= value.value %>" autocomplete="off" checked> <%= value.name %> 
+                                    <% product.variants.forEach(function(variant, index){ %>
+                                        <% if(typeof variant.variation_values.color != 'undefined' && variant.variation_values.color == value.value){ %> 
+                                            <% tempVar = variant.product_id %>
+                                        <% } %>  
+                                    <% }) %>  
+                                    <input type="radio" onclick="getradval(this)" data-img="<%= tempLink %>" data-var="<%= tempVar %>" name="<%= variation.name %>" value="<%= value.value %>" id="<%= value.value %>" autocomplete="off" checked> <%= value.name %> 
                                 </label>
                             </div>
                          <% }) %> 
@@ -35,7 +41,7 @@
                     <div style="float:left">
                         <form class="d-flex" action="/cart/addItem" method="POST">
                             <input type="hidden" name="productId" value="<%= product.id %>">
-                            <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>">
+                            <input type="hidden" id="c_variantID" name="variantId" value="<%= product.variants[0].product_id %>">
                             <input type="hidden" name="quantity" value="1">
                             <button class="btn btn-outline-primary" type="submit">Add to cart</button>
                         </form>  
@@ -43,7 +49,7 @@
                     <div style="float:right">
                         <form class="d-flex" action="/wishlist/addItem" method="POST">
                             <input type="hidden" name="productId" value="<%= product.id %>">
-                            <input type="hidden" name="variantId" value="<%= product.variants[0].product_id %>"> 
+                            <input type="hidden" id="wl_variantID" name="variantId" value="<%= product.variants[0].product_id %>"> 
                             <input type="hidden" name="quantity" value="1">
                             <button class="btn btn-outline-info" type="submit">Add to wishlist</button>
                         </form>  
@@ -67,10 +73,13 @@
 
 <script>
     function getradval(elem) {
-        var docval = document.getElementById(elem.id).dataset.img
-        if(docval != '')
-            document.getElementById("prod-img").src = "/images/" + docval
-        alert(elem.value)
-
+        var imgval = document.getElementById(elem.id).dataset.img
+        var varval = document.getElementById(elem.id).dataset.var
+        if(imgval != '')
+            document.getElementById("prod-img").src = "/images/" + imgval
+        if(varval != ''){
+            document.getElementById("wl_variantID").value = varval
+            document.getElementById("c_variantID").value = varval
+        } 
     }
 </script>

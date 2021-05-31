@@ -74,8 +74,8 @@ const orderPost = async (req,res)=>{
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": `${process.env.HEROKU_DOM}/order/success`,
-                    "cancel_url": `${process.env.HEROKU_DOM}/order/failure`
+                    "return_url": `${process.env.HEROKU_DOM}order/success`,
+                    "cancel_url": `${process.env.HEROKU_DOM}order/failure`
                 },
                 "transactions": [{
                     "item_list": {
